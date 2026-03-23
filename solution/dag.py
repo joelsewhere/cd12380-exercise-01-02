@@ -10,23 +10,23 @@ from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 # ── STEP 2 ───────────────────────────────────────────────────
 QUERY = """
-SELECT
-    region,
-    SUM(sale_amount) AS total_sales
-    {% if params.include_tax %},
-    SUM(tax_amount) AS total_tax
-    {% endif %}
-FROM sales
-WHERE sale_date BETWEEN '{{ params.start_date }}' AND '{{ params.end_date }}'
-GROUP BY region
+    SELECT
+        region,
+        SUM(sale_amount) AS total_sales
+        {% if params.include_tax %},
+        SUM(tax_amount) AS total_tax
+        {% endif %}
+    FROM sales
+    WHERE sale_date BETWEEN '{{ params.start_date }}' AND '{{ params.end_date }}'
+    GROUP BY region
 """
 
 
 # ── STEP 3 ───────────────────────────────────────────────────
 @dag(
     params={
-        "start_date":  Param("2024-01-01", type="string", format="date-time"),
-        "end_date":    Param("2024-03-31", type="string", format="date-time"),
+        "start_date":  Param("2024-01-01", type="string", format="date"),
+        "end_date":    Param("2024-03-31", type="string", format="date"),
         "include_tax": Param(False, type="boolean"),
     },
 )
